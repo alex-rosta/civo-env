@@ -7,5 +7,5 @@ terraform {
 }
 
 provider "civo" {
-  region = "FRA1"
+  region = var.region
 }
