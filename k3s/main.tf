@@ -14,25 +14,25 @@ provider "kubernetes" {
 # Common ingress annotations
 locals {
   common_ingress_annotations = {
-    "kubernetes.io/ingress.class"     = "nginx"
-    "cert-manager.io/cluster-issuer"  = module.cert_manager.issuer_name
+    "kubernetes.io/ingress.class"    = "nginx"
+    "cert-manager.io/cluster-issuer" = module.cert_manager.issuer_name
   }
-  
+
   dashboard_annotations = merge(local.common_ingress_annotations, {
     "nginx.ingress.kubernetes.io/backend-protocol" = "HTTPS"
   })
-  
+
   argocd_annotations = merge(local.common_ingress_annotations, {
-    "nginx.ingress.kubernetes.io/ssl-passthrough" = "true"
+    "nginx.ingress.kubernetes.io/ssl-passthrough"  = "true"
     "nginx.ingress.kubernetes.io/backend-protocol" = "HTTPS"
   })
 }
 
 # Deploy the cert-manager ClusterIssuer
 module "cert_manager" {
-  source       = "../modules/cert_manager"
-  name         = var.issuer_name
-  email        = var.email
+  source        = "../modules/cert_manager"
+  name          = var.issuer_name
+  email         = var.email
   ingress_class = "nginx"
 }
 
@@ -46,7 +46,7 @@ module "dashboard_ingress" {
   service_name    = "kubernetes-dashboard"
   service_port    = 443
   tls_secret_name = "dashboard-tls"
-  
+
   depends_on = [module.cert_manager]
 }
 
@@ -60,6 +60,6 @@ module "argocd_ingress" {
   service_name    = "argo-cd-argocd-server"
   service_port    = 443
   tls_secret_name = "argocd-tls"
-  
+
   depends_on = [module.cert_manager]
 }

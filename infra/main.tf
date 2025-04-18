@@ -5,12 +5,12 @@ data "civo_firewall" "default" {
 
 # Deploy the Kubernetes cluster
 module "kubernetes_cluster" {
-  source        = "../modules/cluster"
-  cluster_name  = var.cluster_name
-  node_size     = var.node_size
-  node_count    = var.node_count
-  applications  = var.applications
-  firewall_id   = data.civo_firewall.default.id
+  source       = "../modules/cluster"
+  cluster_name = var.cluster_name
+  node_size    = var.node_size
+  node_count   = var.node_count
+  applications = var.applications
+  firewall_id  = data.civo_firewall.default.id
 }
 
 # Expose useful outputs
