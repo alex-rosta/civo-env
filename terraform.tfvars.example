@@ -1,0 +1,11 @@
+# Cluster configuration
+cluster_name = "rsk3s-cluster"
+node_size    = "g4s.kube.medium"
+node_count   = 1
+applications = "kubernetes-dashboard,helm,cert-manager,nginx,metrics-server,argocd"
+region       = "FRA1"
+
+# Domain configuration
+domain       = "rosta.dev"
+email        = "alex@rosta.dev"
+issuer_name  = "letsencrypt-prod"
