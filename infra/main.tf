@@ -19,6 +19,12 @@ output "kubeconfig" {
   sensitive = true
 }
 
+resource "local_file" "kubeconfig" {
+  content  = module.kubernetes_cluster.kubeconfig
+  filename = "${path.module}/kubeconfig"
+
+}
+
 output "cluster_id" {
   value       = module.kubernetes_cluster.cluster_id
   description = "ID of the created Kubernetes cluster"

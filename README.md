@@ -1,6 +1,6 @@
-# Civo Kubernetes Cluster with ArgoCD and Dashboard
+# Recreation of my home environment
 
-This project aims to recreate my homelab infra on Civo's cloud-platform with terraform.
+It was not good that my cloud addicted ass got my lab equipment taken away
 
 - Kubernetes cluster on Civo Cloud
 - Kubernetes Dashboard with ingress
