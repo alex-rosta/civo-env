@@ -1,10 +1,10 @@
 terraform {
   required_providers {
     kubernetes = {
-      source  = "hashicorp/kubernetes"
+      source = "hashicorp/kubernetes"
     }
     cloudflare = {
-      source  = "cloudflare/cloudflare"
+      source = "cloudflare/cloudflare"
     }
   }
 }
@@ -79,20 +79,20 @@ output "nginx_ingress_lb_ip" {
 }
 
 module "dashboard_dns" {
-  source = "../modules/dns"
-  cloudflare_email = var.cloudflare_email
+  source             = "../modules/dns"
+  cloudflare_email   = var.cloudflare_email
   cloudflare_api_key = var.cloudflare_api_key
   cloudflare_zone_id = var.cloudflare_zone_id
-  content = data.kubernetes_service.nginx_ingress.status[0].load_balancer[0].ingress[0].ip
-  name = "dashboard.${var.domain}"
+  content            = data.kubernetes_service.nginx_ingress.status[0].load_balancer[0].ingress[0].ip
+  name               = "dashboard.${var.domain}"
 }
 
 module "argocd_dns" {
-  source = "../modules/dns"
-  cloudflare_email = var.cloudflare_email
+  source             = "../modules/dns"
+  cloudflare_email   = var.cloudflare_email
   cloudflare_api_key = var.cloudflare_api_key
   cloudflare_zone_id = var.cloudflare_zone_id
-  content = data.kubernetes_service.nginx_ingress.status[0].load_balancer[0].ingress[0].ip
-  name = "argocd.${var.domain}"
-  
+  content            = data.kubernetes_service.nginx_ingress.status[0].load_balancer[0].ingress[0].ip
+  name               = "argocd.${var.domain}"
+
 }
