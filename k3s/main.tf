@@ -2,7 +2,9 @@ terraform {
   required_providers {
     kubernetes = {
       source  = "hashicorp/kubernetes"
-      version = "~> 2.0"
+    }
+    cloudflare = {
+      source  = "cloudflare/cloudflare"
     }
   }
 }
@@ -62,4 +64,35 @@ module "argocd_ingress" {
   tls_secret_name = "argocd-tls"
 
   depends_on = [module.cert_manager]
+}
+
+
+data "kubernetes_service" "nginx_ingress" {
+  metadata {
+    name      = "ingress-nginx-controller"
+    namespace = "ingress-nginx"
+  }
+}
+
+output "nginx_ingress_lb_ip" {
+  value = data.kubernetes_service.nginx_ingress.status[0].load_balancer[0].ingress[0].ip
+}
+
+module "dashboard_dns" {
+  source = "../modules/dns"
+  cloudflare_email = var.cloudflare_email
+  cloudflare_api_key = var.cloudflare_api_key
+  cloudflare_zone_id = var.cloudflare_zone_id
+  content = data.kubernetes_service.nginx_ingress.status[0].load_balancer[0].ingress[0].ip
+  name = "dashboard.${var.domain}"
+}
+
+module "argocd_dns" {
+  source = "../modules/dns"
+  cloudflare_email = var.cloudflare_email
+  cloudflare_api_key = var.cloudflare_api_key
+  cloudflare_zone_id = var.cloudflare_zone_id
+  content = data.kubernetes_service.nginx_ingress.status[0].load_balancer[0].ingress[0].ip
+  name = "argocd.${var.domain}"
+  
 }
