@@ -59,6 +59,11 @@ After deployment, the following services will be available:
 - Kubernetes Dashboard: https://dashboard.yourdomain.com
 - ArgoCD Dashboard: https://argocd.yourdomain.com
 
+Get the argocd initial secret: 
+```
+kubectl get secret argocd-initial-admin-secret -n argocd -o jsonpath="{.data.password}" | ForEach-Object { [System.Text.Encoding]::UTF8.GetString([System.Convert]::FromBase64String($_)) }
+```
+
 ## Configuration
 
 The project is designed to be easily configurable:

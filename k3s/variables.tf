@@ -40,3 +40,47 @@ variable "cloudflare_zone_id" {
   sensitive   = true
 }
 
+variable "blizz_clientid" {
+  description = "Blizzard client ID"
+  type        = string
+  sensitive   = true
+  
+}
+
+variable "blizz_clientsecret" {
+  description = "Blizzard client secret"
+  type        = string
+  sensitive   = true
+  
+}
+
+variable "warcraftlogs_api_token" {
+  description = "WarcraftLogs API token"
+  type        = string
+  sensitive   = true
+  
+}
+
+variable "redis_addr" {
+  description = "Redis address"
+  type        = string
+  sensitive   = true
+  
+}
+
+variable "redis_password" {
+  description = "Redis password"
+  type        = string
+  sensitive   = true
+  
+}
+
+variable "redis_db" {
+  description = "Redis database number"
+  type        = string
+  default     = "0"
+  
+}
+
+
+
