@@ -37,6 +37,7 @@ resource "civo_kubernetes_cluster" "cluster" {
   firewall_id  = var.firewall_id
   name         = var.cluster_name
   applications = var.applications
+  write_kubeconfig = true
   pools {
     label      = "${var.cluster_name}-pool"
     size       = var.node_size

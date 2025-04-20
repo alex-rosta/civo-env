@@ -13,12 +13,6 @@ module "kubernetes_cluster" {
   firewall_id  = data.civo_firewall.default.id
 }
 
-# Expose useful outputs
-output "kubeconfig" {
-  value     = module.kubernetes_cluster.kubeconfig
-  sensitive = true
-}
-
 resource "local_file" "kubeconfig" {
   content  = module.kubernetes_cluster.kubeconfig
   filename = "${path.module}/kubeconfig"

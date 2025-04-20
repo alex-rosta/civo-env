@@ -1,18 +1,3 @@
-terraform {
-  required_providers {
-    kubernetes = {
-      source = "hashicorp/kubernetes"
-    }
-    cloudflare = {
-      source = "cloudflare/cloudflare"
-    }
-  }
-}
-
-provider "kubernetes" {
-  config_path = "../k3s/kubeconfig"
-}
-
 # Common ingress annotations
 locals {
   common_ingress_annotations = {
@@ -33,9 +18,10 @@ locals {
 # Deploy the cert-manager ClusterIssuer
 module "cert_manager" {
   source        = "../modules/cert_manager"
-  name          = var.issuer_name
+  name          = "letsencrypt-staging"
   email         = var.email
   ingress_class = "nginx"
+  server = "https://acme-staging-v02.api.letsencrypt.org/directory"
 }
 
 # Deploy the Kubernetes Dashboard ingress
@@ -72,10 +58,6 @@ data "kubernetes_service" "nginx_ingress" {
     name      = "ingress-nginx-controller"
     namespace = "ingress-nginx"
   }
-}
-
-output "nginx_ingress_lb_ip" {
-  value = data.kubernetes_service.nginx_ingress.status[0].load_balancer[0].ingress[0].ip
 }
 
 module "dashboard_dns" {
