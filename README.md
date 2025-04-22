@@ -6,6 +6,7 @@ It was not good that my cloud addicted ass got my lab equipment taken away
 - Kubernetes Dashboard with ingress
 - ArgoCD with ingress
 - Cert-manager for TLS certificates with Let's Encrypt
+- Easily apply argocd manifests to apply gitops deployments.
 
 ## Project Structure
 
