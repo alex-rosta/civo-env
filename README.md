@@ -69,11 +69,11 @@ Get the argocd initial secret:
 kubectl get secret argocd-initial-admin-secret -n argocd -o jsonpath="{.data.password}" | ForEach-Object { [System.Text.Encoding]::UTF8.GetString([System.Convert]::FromBase64String($_)) }
 ```
 
-## Configuration
+## Deploying more services
 
-The project is designed to be easily configurable:
-
-- Modify `terraform.tfvars` to change basic configuration
-- Infrastructure settings can be found in `infra/variables.tf`
-- Kubernetes resources settings can be found in `k3s/variables.tf`
-- Each module has its own variables that can be customized
+Adding your own services to the cluster is easy through ArgoCD yaml deployments. Just add them in gitops\argocd like the example, and reference them with a manifest block like such;
+```hcl
+resource "kubernetes_manifest" "app-armory" {
+  manifest = yamldecode(file("../gitops/argocd/app-armory.yaml"))
+}
+```
