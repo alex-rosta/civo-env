@@ -2,11 +2,13 @@
 
 It was not good that my cloud addicted ass got my lab equipment taken away
 
+This project assumes that your dns is provided by Cloudflare.
 - Kubernetes cluster on Civo Cloud
 - Kubernetes Dashboard with ingress
 - ArgoCD with ingress
-- Cert-manager for TLS certificates with Let's Encrypt
+- Cert-manager for TLS certificates with Let's Encrypt, http01 challenge.
 - Easily apply argocd manifests to apply gitops deployments.
+- Auto creation of DNS records
 
 ## Project Structure
 
@@ -40,7 +42,7 @@ This is to keep the infrastructure separated from the kubernetes customization.
 
 1. Clone this repository
 2. Copy `terraform.tfvars.example` to `terraform.tfvars` and customize the values
-3. Initialize Terraform:
+3. Initialize infra folder:
    ```
    cd /civoenv/infra && terraform init
    ```
@@ -48,9 +50,10 @@ This is to keep the infrastructure separated from the kubernetes customization.
    ```
    terraform apply
    ```
-5. Proceed to the k3s stage
+5. Proceed to the k3s stage (The kubeconfig file used for cluster operations will be written to the infra folder and referenced)
    ```
    cd ../k3s && terraform init
+   terraform apply
    ```
 
 ## Accessing Services
@@ -73,4 +76,3 @@ The project is designed to be easily configurable:
 - Infrastructure settings can be found in `infra/variables.tf`
 - Kubernetes resources settings can be found in `k3s/variables.tf`
 - Each module has its own variables that can be customized
-
