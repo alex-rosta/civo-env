@@ -79,10 +79,6 @@ module "argocd_dns" {
 
 }
 
-resource "kubernetes_manifest" "app-armory" {
-  manifest = yamldecode(file("../gitops/argocd/app-armory.yaml"))
-}
-
 module "armory_dns" {
   source             = "../modules/dns"
   cloudflare_email   = var.cloudflare_email
@@ -90,6 +86,10 @@ module "armory_dns" {
   cloudflare_zone_id = var.cloudflare_zone_id
   content            = data.kubernetes_service.nginx_ingress.status[0].load_balancer[0].ingress[0].ip
   name               = "armory.${var.domain}"
+}
+
+resource "kubernetes_manifest" "app-armory" {
+  manifest = yamldecode(file("../gitops/argocd/app-armory.yaml"))
 }
 
 resource "kubernetes_secret" "app-armory-secret" {
