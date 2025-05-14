@@ -1,6 +1,38 @@
-# Get the default firewall
-data "civo_firewall" "default" {
-  name = "default-default"
+data "http" "my_ip" {
+  url = "https://api.ipify.org?format=text"
+}
+
+resource "civo_firewall" "civo-fw" {
+  name                 = "civo-fw"
+  create_default_rules = false
+  ingress_rule {
+    label      = "https"
+    protocol   = "tcp"
+    port_range = "443"
+    cidr       = ["0.0.0.0"]
+    action     = "allow"
+  }
+  ingress_rule {
+    label      = "kubectl"
+    protocol   = "tcp"
+    port_range = "6443"
+    cidr       = ["${data.http.my_ip.response_body}/32"]
+    action     = "allow"
+  }
+  egress_rule {
+    label      = "allow-all-tcp"
+    protocol   = "tcp"
+    port_range = "0-65535"
+    cidr       = ["0.0.0.0/0"]
+    action     = "allow"
+  }
+  egress_rule {
+    label      = "allow-all-udp"
+    protocol   = "udp"
+    port_range = "0-65535"
+    cidr       = ["0.0.0.0/0"]
+    action     = "allow"
+  }
 }
 
 # Deploy the Kubernetes cluster
@@ -10,7 +42,7 @@ module "kubernetes_cluster" {
   node_size    = var.node_size
   node_count   = var.node_count
   applications = var.applications
-  firewall_id  = data.civo_firewall.default.id
+  firewall_id  = civo_firewall.civo-fw.id
 }
 
 resource "local_file" "kubeconfig" {

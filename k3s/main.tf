@@ -21,7 +21,7 @@ module "cert_manager" {
   name          = "letsencrypt-prod"
   email         = var.email
   ingress_class = "nginx"
-  server = "https://acme-v02.api.letsencrypt.org/directory"
+  server        = "https://acme-v02.api.letsencrypt.org/directory"
 }
 
 # Deploy the Kubernetes Dashboard ingress
@@ -98,13 +98,13 @@ resource "kubernetes_secret" "app-armory-secret" {
     namespace = "armory"
   }
   data = {
-    "CLIENT_ID" = var.blizz_clientid
-    "CLIENT_SECRET" = var.blizz_clientsecret
+    "CLIENT_ID"              = var.blizz_clientid
+    "CLIENT_SECRET"          = var.blizz_clientsecret
     "WARCRAFTLOGS_API_TOKEN" = var.warcraftlogs_api_token
-    "REDIS_ADDR" = var.redis_addr
-    "REDIS_PASSWORD" = var.redis_password
-    "REDIS_DB" = var.redis_db
+    "REDIS_ADDR"             = var.redis_addr
+    "REDIS_PASSWORD"         = var.redis_password
+    "REDIS_DB"               = var.redis_db
   }
-  depends_on = [ kubernetes_manifest.app-armory ]
-  
+  depends_on = [kubernetes_manifest.app-armory]
+
 }
