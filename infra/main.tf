@@ -9,7 +9,7 @@ resource "civo_firewall" "civo-fw" {
     label      = "https"
     protocol   = "tcp"
     port_range = "443"
-    cidr       = ["0.0.0.0"]
+    cidr       = ["0.0.0.0/0"]
     action     = "allow"
   }
   ingress_rule {
