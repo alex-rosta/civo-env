@@ -1,0 +1,16 @@
+kube-prometheus-stack:
+  prometheus:
+    prometheusSpec:
+      serviceMonitorSelectorNilUsesHelmValues: false
+  grafana:
+    adminPassword: "admin"
+    service:
+      type: ClusterIP
+    persistence:
+      enabled: true
+      size: 5Gi
+    dashboards:
+      default:
+        k3s-dashboard:
+          gnetId: 11074
+          datasource: Prometheus
