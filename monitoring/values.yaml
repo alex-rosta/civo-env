@@ -36,9 +36,9 @@ grafana:
   sidecar:
     dashboards:
       enabled: true
-      searchNamespace: ALL
   dashboards:
     default:
-      k3s-monitoring:
-        gnetId: 15282
+      node-exporter:
+        gnetId: 1860
+        revision: 28
         datasource: Prometheus
