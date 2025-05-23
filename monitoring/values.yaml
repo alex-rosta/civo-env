@@ -39,33 +39,28 @@ grafana:
     dashboardproviders.yaml:
       apiVersion: 1
       providers:
-        - name: 'default' # You can choose a name for your provider
+        - name: 'default'
           orgId: 1
-          folder: '' # Or specify a folder like 'Kubernetes'
+          folder: ''
           type: file
           disableDeletion: false
           editable: true
           options:
-            path: /var/lib/grafana/dashboards/default # This path is where the sidecar will look
+            path: /var/lib/grafana/dashboards/default
 
   dashboards:
-    # 'default' should match the 'name' of the dashboardProvider above
     default:
-      # Example: Kubernetes / Kubelet dashboard (Gnet ID 15764)
-      kubernetes-kubelet: # This is a unique name for your dashboard
-        gnetId: 15764 # Replace with the actual Gnet ID from grafana.com/dashboards
-        revision: 2 # Optional: specify a revision if you want a particular version
-        datasource: Prometheus # This should match the 'name' of your Prometheus datasource defined above
+      kubernetes-monitoring:
+        gnetId: 15282
+        revision: 1
+        datasource: Prometheus
 
-      # Example: Node Exporter Full dashboard (Gnet ID 1860)
-      node-exporter-full: # Another unique name for your dashboard
+      node-exporter-full:
         gnetId: 1860
-        revision: 37 # Optional
-        datasource: Prometheus # Point to your Prometheus datasource
+        revision: 37
+        datasource: Prometheus
 
-  # Enable the sidecar that provisions dashboards from ConfigMaps
   sidecar:
     dashboards:
       enabled: true
-      label: "grafana_dashboard" # This is the label the sidecar looks for on ConfigMaps
-      # searchNamespace: "monitoring" # Optional: If your dashboards ConfigMaps are in a different namespace
+      label: "grafana_dashboard"
