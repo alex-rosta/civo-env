@@ -1,0 +1,35 @@
+prometheus:
+  alertmanager:
+    enabled: false
+  pushgateway:
+    enabled: false
+  server:
+    service:
+      type: ClusterIP
+    resources:
+      limits:
+        memory: 200Mi
+      requests:
+        memory: 100Mi
+    persistentVolume:
+      enabled: false
+    extraScrapeConfigs:
+      - job_name: 'kubernetes-nodes'
+        static_configs:
+          - targets: ['localhost:9100']
+
+grafana:
+  adminPassword: "admin"
+  service:
+    type: ClusterIP
+  persistence:
+    enabled: false
+  datasources:
+    datasources.yaml:
+      apiVersion: 1
+      datasources:
+        - name: Prometheus
+          type: prometheus
+          access: proxy
+          url: http://k3s-monitoring-prometheus-server
+          isDefault: true
