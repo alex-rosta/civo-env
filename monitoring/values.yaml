@@ -33,12 +33,7 @@ grafana:
           access: proxy
           url: http://monitoring-prometheus-server.monitoring.svc.cluster.local
           isDefault: true
-  sidecar:
-    dashboards:
-      enabled: true
   dashboards:
     default:
-      node-exporter:
-        gnetId: 1860
-        revision: 28
-        datasource: Prometheus
+      kubernetes:
+        file: dashboards/k3s-dashboard.json
