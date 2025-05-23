@@ -31,5 +31,5 @@ grafana:
         - name: Prometheus
           type: prometheus
           access: proxy
-          url: http://k3s-monitoring-prometheus-server
+          url: http://monitoring-prometheus-server.monitoring.svc.cluster.local
           isDefault: true
