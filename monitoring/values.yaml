@@ -41,5 +41,4 @@ grafana:
     default:
       k3s-monitoring:
         gnetId: 15282
-        revision: 1
         datasource: Prometheus
