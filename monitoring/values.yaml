@@ -37,6 +37,4 @@ grafana:
         default:
           kubernetes-cluster-monitoring:
             datasource: Prometheus
-            type: prometheus
-            url: http://monitoring-prometheus-server.monitoring.svc.cluster.local
             gnetId: 15282
