@@ -24,59 +24,11 @@ module "cert_manager" {
   server        = "https://acme-v02.api.letsencrypt.org/directory"
 }
 
-# Deploy the Kubernetes Dashboard ingress
-module "dashboard_ingress" {
-  source          = "../modules/ingress"
-  name            = "kubernetes-dashboard-ingress"
-  namespace       = "kubernetes-dashboard"
-  annotations     = local.dashboard_annotations
-  host            = "dashboard.${var.domain}"
-  service_name    = "kubernetes-dashboard"
-  service_port    = 443
-  tls_secret_name = "dashboard-tls"
-
-  depends_on = [module.cert_manager]
-}
-
-# Deploy the ArgoCD ingress
-module "argocd_ingress" {
-  source          = "../modules/ingress"
-  name            = "argocd-server-ingress"
-  namespace       = "argocd"
-  annotations     = local.argocd_annotations
-  host            = "argocd.${var.domain}"
-  service_name    = "argo-cd-argocd-server"
-  service_port    = 443
-  tls_secret_name = "argocd-tls"
-
-  depends_on = [module.cert_manager]
-}
-
-
 data "kubernetes_service" "nginx_ingress" {
   metadata {
     name      = "ingress-nginx-controller"
     namespace = "ingress-nginx"
   }
-}
-
-module "dashboard_dns" {
-  source             = "../modules/dns"
-  cloudflare_email   = var.cloudflare_email
-  cloudflare_api_key = var.cloudflare_api_key
-  cloudflare_zone_id = var.cloudflare_zone_id
-  content            = data.kubernetes_service.nginx_ingress.status[0].load_balancer[0].ingress[0].ip
-  name               = "dashboard.${var.domain}"
-}
-
-module "argocd_dns" {
-  source             = "../modules/dns"
-  cloudflare_email   = var.cloudflare_email
-  cloudflare_api_key = var.cloudflare_api_key
-  cloudflare_zone_id = var.cloudflare_zone_id
-  content            = data.kubernetes_service.nginx_ingress.status[0].load_balancer[0].ingress[0].ip
-  name               = "argocd.${var.domain}"
-
 }
 
 module "armory_dns" {
@@ -90,6 +42,10 @@ module "armory_dns" {
 
 resource "kubernetes_manifest" "app-armory" {
   manifest = yamldecode(file("../gitops/argocd/app-armory.yaml"))
+}
+
+resource "kubernetes_manifest" "monitoring-grafana" {
+  manifest = yamldecode(file("../gitops/argocd/monitoring-grafana.yaml"))
 }
 
 resource "kubernetes_secret" "app-armory-secret" {
