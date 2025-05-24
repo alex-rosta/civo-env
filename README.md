@@ -4,11 +4,12 @@ It was not good that my cloud addicted ass got my lab equipment taken away
 
 This project assumes that your dns is provided by Cloudflare.
 - Kubernetes cluster on Civo Cloud
-- Kubernetes Dashboard with ingress
-- ArgoCD with ingress
-- Cert-manager for TLS certificates with Let's Encrypt, http01 challenge.
-- Easily apply argocd manifests to apply gitops deployments.
+- Grafana & Prometheus with dashboard preconfigured
+- ArgoCD for Gitops deployments
+- Cert-manager for TLS certificates with Let's Encrypt, http01 challenge
+- Deploys a sample application of mine
 - Auto creation of DNS records
+- Nginx ingress
 
 ## Project Structure
 
@@ -48,12 +49,14 @@ This is to keep the infrastructure separated from the kubernetes customization.
    ```
 4. Apply the configuration:
    ```
+   terraform plan
    terraform apply
    ```
 <span style="color:red;"><b>(!) Between this stage and the next there may be some delay in getting the ingress ip up. And since the next stage references that ip, there may be errors if it doesn't properly pick it up. Wait a few minutes and then proceed to k3s stage in order for Civo to properly get the nginx ingress up and running.</b></span><br>
 5. Proceed to the k3s stage (The kubeconfig file used for cluster operations will be written to the infra folder and referenced)
    ```
    cd ../k3s && terraform init
+   terraform plan
    terraform apply
    ```
 
@@ -61,8 +64,7 @@ This is to keep the infrastructure separated from the kubernetes customization.
 
 After deployment, the following services will be available:
 
-- Kubernetes Dashboard: https://dashboard.yourdomain.com
-- ArgoCD Dashboard: https://argocd.yourdomain.com
+- Armory application (Sample app): https://armory.yourdomain.com
 
 Get the argocd initial secret: 
 ```
