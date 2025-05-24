@@ -22,6 +22,10 @@ jobs:
         uses: terraform-linters/setup-tflint@v4
         with:
           tflint_version: "latest"
+      - name: Check path
+        run: |
+          pwd
+          ls -la
       - name: Run TFLint and set config
         run: |
           tflint --recursive --config "$pwd/.tflint.hcl"
