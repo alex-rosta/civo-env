@@ -2,5 +2,5 @@
 cluster_name = "rsk3s-cluster"
 node_size    = "g4s.kube.medium"
 node_count   = 1
-applications = "kubernetes-dashboard,helm,cert-manager,nginx,metrics-server,argocd"
+applications = "helm,cert-manager,nginx,metrics-server,argocd"
 region       = "FRA1"
