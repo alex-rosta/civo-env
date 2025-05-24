@@ -32,7 +32,7 @@ variable "cloudflare_zone_id" {
 
 variable "content" {
   description = "Content of the DNS record (IP address)"
-  type = string
+  type        = string
 }
 
 variable "name" {
