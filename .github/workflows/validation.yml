@@ -23,7 +23,5 @@ jobs:
         with:
           tflint_version: "latest"
       - name: Run TFLint and set config
-        env:
-          TFLINT_CONFIG: ${{ github.workspace }}/.tflint.hcl
         run: |
-          tflint --recursive
+          tflint --recursive --config "$pwd/.tflint.hcl"
