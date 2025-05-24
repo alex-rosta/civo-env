@@ -1,20 +1,3 @@
-# Common ingress annotations
-locals {
-  common_ingress_annotations = {
-    "kubernetes.io/ingress.class"    = "nginx"
-    "cert-manager.io/cluster-issuer" = module.cert_manager.issuer_name
-  }
-
-  dashboard_annotations = merge(local.common_ingress_annotations, {
-    "nginx.ingress.kubernetes.io/backend-protocol" = "HTTPS"
-  })
-
-  argocd_annotations = merge(local.common_ingress_annotations, {
-    "nginx.ingress.kubernetes.io/ssl-passthrough"  = "true"
-    "nginx.ingress.kubernetes.io/backend-protocol" = "HTTPS"
-  })
-}
-
 # Deploy the cert-manager ClusterIssuer
 module "cert_manager" {
   source        = "../modules/cert_manager"
