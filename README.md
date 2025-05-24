@@ -13,31 +13,9 @@ This project assumes that your dns is provided by Cloudflare.
 
 ## Project Structure
 
-I have split the configuration into two stages, infra and k3s.
+I have split the configuration into two "stages", infra and k3s.
 Run the infra first. and then proceed with k3s.
-This is to keep the infrastructure separated from the kubernetes customization.
-
-```
-.
-├── infra/                      # Infrastructure configuration
-│   ├── main.tf                 # Main infrastructure file
-│   ├── providers.tf            # Provider configuration
-│   └── variables.tf            # Infrastructure variables
-├── k3s/                        # Kubernetes resources
-│   ├── main.tf                 # Kubernetes resources configuration
-│   ├── variables.tf            # Kubernetes variables
-│   └── kubeconfig              # Generated kubeconfig file (gitignored)
-├── modules/                    # Reusable modules
-│   ├── cert_manager/           # Certificate manager module
-│   │   └── main.tf             # ClusterIssuer configuration
-│   ├── cluster/                # Kubernetes cluster module
-│   │   └── main.tf             # Cluster configuration
-│   └── ingress/                # Ingress module
-│       └── main.tf             # Ingress configuration
-├── terraform.tfvars.example    # Example variables configuration
-├── .gitignore                  # Git ignore file
-└── README.md                   # This file
-```
+This is to keep the infrastructure separated from the application layer.
 
 ## Getting Started
 
@@ -79,3 +57,13 @@ resource "kubernetes_manifest" "app-armory" {
   manifest = yamldecode(file("../gitops/argocd/app-armory.yaml"))
 }
 ```
+And DNS if you want;
+```hcl
+module "customapp_dns" {
+  source             = "../modules/dns"
+  cloudflare_email   = var.cloudflare_email
+  cloudflare_api_key = var.cloudflare_api_key
+  cloudflare_zone_id = var.cloudflare_zone_id
+  content            = data.kubernetes_service.nginx_ingress.status[0].load_balancer[0].ingress[0].ip
+  name               = "custom_app.${var.domain}"
+}
