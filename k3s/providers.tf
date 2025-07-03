@@ -14,11 +14,11 @@ terraform {
     endpoints = {
       s3 = var.s3_endpoint
     }
-    key                      = "k3s/terraform.tfstate"
-    bucket = var.s3_bucket_name
-    region = "auto"
-    access_key = var.cf_access_key
-    secret_key = var.cf_secret_key
+    key                         = "k3s/terraform.tfstate"
+    bucket                      = var.s3_bucket_name
+    region                      = "auto"
+    access_key                  = var.cf_access_key
+    secret_key                  = var.cf_secret_key
     skip_credentials_validation = true
     skip_metadata_api_check     = true
     skip_region_validation      = true

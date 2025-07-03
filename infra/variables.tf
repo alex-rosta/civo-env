@@ -31,13 +31,13 @@ variable "region" {
 variable "akeyless_access_id" {
   description = "Akeyless access ID"
   type        = string
-  sensitive = true
+  sensitive   = true
 }
 
 variable "akeyless_access_key" {
   description = "Akeyless access key"
   type        = string
-  sensitive = true
+  sensitive   = true
 }
 
 variable "s3_bucket_name" {
@@ -49,7 +49,7 @@ variable "s3_bucket_name" {
 variable "s3_endpoint" {
   description = "S3 endpoint for Terraform state"
   type        = string
-  sensitive = true
+  sensitive   = true
 }
 
 variable "cf_access_key" {

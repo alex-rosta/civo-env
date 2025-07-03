@@ -31,7 +31,7 @@ variable "s3_bucket_name" {
 variable "s3_endpoint" {
   description = "S3 endpoint for Terraform state"
   type        = string
-  sensitive = true
+  sensitive   = true
 }
 
 variable "cf_access_key" {
