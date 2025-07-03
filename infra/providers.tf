@@ -1,12 +1,3 @@
-data "akeyless_static_secret" "cloudflare_secrets" {
-  path = "/cloudflare/cloudflare"
-
-}
-
-locals {
-  cloudflare_secrets = jsondecode(data.akeyless_static_secret.cloudflare_secrets.value)
-}
-
 terraform {
   required_providers {
     civo = {
